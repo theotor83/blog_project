@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+
+    <div class="row">
+        <!-- Blog Post 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="Blog post image">
+                <div class="card-body">
+                    <h5 class="card-title">First Lorem Ipsum Post</h5>
+                    <p class="card-text text-muted small">
+                        Posted by Admin on January 1, 2025
+                    </p>
+                    <p class="card-text">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Ut enim ad minim veniam, quis nostrud exercitation...
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Post 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="Blog post image">
+                <div class="card-body">
+                    <h5 class="card-title">Second Dolor Sit Amet</h5>
+                    <p class="card-text text-muted small">
+                        Posted by Admin on January 2, 2025
+                    </p>
+                    <p class="card-text">
+                        Consectetur adipiscing elit, sed do eiusmod tempor incididunt.
+                        Ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris...
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Post 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="{% static 'images/placeholder.jpg' %}" class="card-img-top" alt="Blog post image">
+                <div class="card-body">
+                    <h5 class="card-title">Third Consectetur Adipiscing</h5>
+                    <p class="card-text text-muted small">
+                        Posted by Admin on January 3, 2025
+                    </p>
+                    <p class="card-text">
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Ut enim ad minim veniam, quis nostrud...
+                    </p>
+                    <a href="#" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

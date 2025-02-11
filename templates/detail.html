@@ -6,13 +6,13 @@
     <article>
         <div class="row">
             <div class="col-lg-8 mx-auto">
-                <h1 class="mb-4">Lorem Ipsum Post</h1>
+                <h1 class="mb-4">{{post.title}}</h1>
                 <div class="meta mb-4 text-muted">
-                    Posted by Admin on January 1, 2025
+                    Posted by admin on January 1, 2025
                 </div>
-                <img src="{% static 'images/placeholder.jpg' %}" width="600" class="img-fluid mb-4" alt="Featured image">
+                <img src="{% static 'images/{{post.image_name}}' %}" width="600" class="img-fluid mb-4" alt="Featured image">
                 <div class="content">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                    <p>{{post.text}}</p>
                     
                     <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
 

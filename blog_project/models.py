@@ -3,9 +3,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 class BlogPost(models.Model):
-    #user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     image_name = models.TextField(max_length=255)
     title = models.PositiveIntegerField(null=True)
     text = models.TextField(max_length=65535)
     dateCreated = models.DateTimeField(default=timezone.now)
     dateUpdated = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return self.title

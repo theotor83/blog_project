@@ -21,4 +21,7 @@
             </div>
         {% endfor %}
     </div>
+    {% if user.is_superuser %}
+        <a href="#" class="btn btn-primary floating-button">Create New Post</a>
+    {% endif %}
 {% endblock %}

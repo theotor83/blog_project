@@ -21,11 +21,6 @@
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="{% url 'logout' %}">Log out</a>
                     </li>
-                        {% if user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link btn btn-primary" href="#">Create New Post</a>
-                        </li>
-                        {% endif %}
                     {% else %}
                     <li class="nav-item">
                         <a class="nav-link btn btn-primary" href="{% url 'login' %}">Login/Sign up</a>

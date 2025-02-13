@@ -8,10 +8,36 @@
 }
 
 footer {
-    margin-top: 100px;
+    margin-top: auto;
+    padding: 1rem 0;
 }
 
 .login-card, .register-card {
     transition: none !important;
     transform: none !important;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+.floating-button {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    z-index: 1000;
+    padding: 12px 24px;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+}
+
+.floating-button:hover {
+    transform: translateY(-2px);
 }

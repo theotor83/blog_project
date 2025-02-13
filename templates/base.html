@@ -17,9 +17,20 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link btn btn-primary" href="{% url 'logout' %}">Log out</a>
                     </li>
+                        {% if user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary" href="#">Create New Post</a>
+                        </li>
+                        {% endif %}
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="{% url 'login' %}">Login/Sign up</a>
+                    </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

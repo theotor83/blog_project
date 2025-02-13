@@ -4,7 +4,6 @@
 
     <div class="row">
         {% for post in posts %}
-            <!-- Blog Post 1 -->
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
                     <a href="post/{{post.id}}"> <img src="{% static 'images/'|add:post.image_name %}" class="card-img-top" alt="Blog post image"></a>

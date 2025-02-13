@@ -6,3 +6,7 @@ from .models import BlogPost
 def index(request):
     posts = BlogPost.objects.all()
     return render(request, "index.html", {"posts": posts})
+
+def postdetails(request, postid):
+    post = get_object_or_404(BlogPost, pk=postid)
+    return render(request,"detail.html",{"post": post})

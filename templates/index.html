@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{post.title}}</h5>
                         <p class="card-text text-muted small">
-                            Posted by {{post.User.username}} on {{post.dateCreated}}
+                            Posted by {{post.user.username}} on {{post.dateCreated}}
                         </p>
                         <p class="card-text">
                             {{post.text|truncatechars:223}}

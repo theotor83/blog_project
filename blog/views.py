@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import BlogPost
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+from . import forms
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -37,3 +39,16 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("/")
+
+@login_required()
+def new_post(request):
+    if request.method == 'POST':
+        form = forms.CreatePost(request.POST)
+        if form.is_valid:
+            new_post = form.save(commit=False)
+            new_post.user = request.user
+            new_post.save()
+            return redirect('index')
+    else:
+        form = forms.CreatePost()
+    return render(request, 'new_post.html', {'form': form})

@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
-    posts = BlogPost.objects.all()
+    posts = BlogPost.objects.all().order_by('-id').values
     return render(request, "index.html", {"posts": posts})
 
 def postdetails(request, postid):

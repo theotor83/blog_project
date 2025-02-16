@@ -7,7 +7,7 @@
         <div class="card shadow-lg border-0 rounded-lg mt-5 login-card">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Create a new post</h3></div>
             <div class="card-body">
-                <form action="{% url 'new-post' %}" method="post">
+                <form action="{% url 'new-post' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group mb-3">

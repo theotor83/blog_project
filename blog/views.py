@@ -50,7 +50,7 @@ def logout_view(request):
 @login_required()
 def new_post(request):
     if request.method == 'POST':
-        form = forms.CreatePost(request.POST)
+        form = forms.CreatePost(request.POST, request.FILES)
         if form.is_valid:
             new_post = form.save(commit=False)
             new_post.user = request.user

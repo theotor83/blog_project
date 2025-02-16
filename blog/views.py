@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import BlogPost
+from .models import BlogPost, Comment
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from . import forms
@@ -13,7 +13,14 @@ def index(request):
 
 def postdetails(request, postid):
     post = get_object_or_404(BlogPost, pk=postid)
-    return render(request,"detail.html",{"post": post})
+    comments = Comment.objects.filter(post=post)
+    form = forms.CommentForm()
+
+    return render(request, "detail.html", {
+        "post": post,
+        "comments": comments,
+        "form": form,
+    })
 
 def register_view(request):
     if request.method == "POST":
@@ -52,3 +59,18 @@ def new_post(request):
     else:
         form = forms.CreatePost()
     return render(request, 'new_post.html', {'form': form})
+
+@login_required
+def new_comment(request, postid):
+    post = get_object_or_404(BlogPost, pk=postid)
+
+    if request.method == "POST":
+        form = forms.CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.user = request.user  # Ensure the user is logged in
+            comment.save()
+            return redirect('post-details', postid=post.id)
+
+    return redirect('post-details', postid=post.id)

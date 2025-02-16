@@ -9,6 +9,3 @@ class BlogPost(models.Model):
     text = models.TextField(max_length=65535)
     dateCreated = models.DateTimeField(default=timezone.now)
     dateUpdated = models.DateTimeField(default=timezone.now)
-    
-    def __str__(self):
-        return self.title

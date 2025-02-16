@@ -8,4 +8,5 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('new_post/', views.new_post, name='new-post'),
+    path('post/<int:postid>/comment/', views.new_comment, name='new-comment'),
 ]

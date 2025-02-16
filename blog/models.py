@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class BlogPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    image_name = models.CharField(max_length=255)
+    image = models.ImageField(default='placeholder.jpg', blank=True)
     title = models.CharField(max_length=255, null=True)
     text = models.TextField(max_length=65535)
     dateCreated = models.DateTimeField(default=timezone.now)

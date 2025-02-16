@@ -6,7 +6,7 @@
         {% for post in posts %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
-                    <a href="post/{{post.id}}"> <img src="{% static 'images/'|add:post.image_name %}" class="card-img-top" alt="Blog post image"></a>
+                    <a href="post/{{post.id}}"> <img src="{{'media/'|add:post.image}}" class="card-img-top" alt="{{post.image}}"></a> <!-- ??? doesn't work by doing {{post.image.url}} -->
                     <div class="card-body">
                         <h5 class="card-title">{{post.title}}</h5>
                         <p class="card-text text-muted small">
@@ -22,6 +22,6 @@
         {% endfor %}
     </div>
     {% if user.is_superuser %}
-        <a href="new_post" class="btn btn-primary floating-button form-submit">Create New Post</a>
+        <a href="new_post" class="btn btn-primary floating-button form-sub  cmit">Create New Post</a>
     {% endif %}
 {% endblock %}

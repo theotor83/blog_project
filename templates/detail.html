@@ -10,7 +10,7 @@
                 <div class="meta mb-4 text-muted">
                     Posted by {{post.user.username}} on {{post.dateCreated}}
                 </div>
-                <img src="{% static 'images/'|add:post.image_name %}" width="600" class="img-fluid mb-4" alt="Featured image">
+                <img src="{{post.image.url}}" width="600" class="img-fluid mb-4" alt="{{post.title}}">
                 <div class="content">
                     <p>{{post.text}}</p>
                 </div>

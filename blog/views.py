@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from . import forms
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
+from django.utils import timezone
 
 # Create your views here.
 
@@ -77,14 +79,19 @@ def new_comment(request, postid):
 
 @login_required
 def edit_post(request, postid):
-    post = get_object_or_404(BlogPost, pk=postid)
+    post = get_object_or_404(BlogPost, id=postid)
 
-    if request.method == "POST":
-        form = forms.PostForm(request.POST, instance=post)
+    if request.user != post.user:
+        return HttpResponseForbidden()
+    
+    if request.method == 'POST':
+        form = forms.PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
-            form.save()
+            post = form.save(commit=False)
+            post.dateUpdated = timezone.now()
+            post.save()
             return redirect('post-details', postid=post.id)
     else:
         form = forms.PostForm(instance=post)
-
-    return render(request, 'new_post.html', {'form': form, 'post': post})
+    
+    return render(request, 'edit_post.html', {'form': form})

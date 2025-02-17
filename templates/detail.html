@@ -10,7 +10,11 @@
             <div class="col-lg-8 mx-auto">
                 <h1 class="mb-4">{{post.title}}</h1>
                 <div class="meta mb-4 text-muted">
-                    Posted by {{post.user.username}} on {{post.dateCreated}}
+                    {% if post.dateCreated == post.dateUpdated%}
+                        Posted by {{post.user.username}} on {{post.dateCreated}}
+                    {% else %}
+                        Posted by {{post.user.username}} on {{post.dateCreated}} (last updated on {{post.dateUpdated}})
+                    {% endif %}
                 </div>
                 <img src="{{post.image.url}}" width="600" class="img-fluid mb-4" alt="{{post.title}}">
                 <div class="content">

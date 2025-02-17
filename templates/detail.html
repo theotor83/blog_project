@@ -3,6 +3,9 @@
 {% block content %}
 
     <article>
+        {% if user.is_superuser %}
+            <a href="{% url 'edit-post' post.id %}" class="btn btn-primary floating-button">Edit</a>
+        {% endif %}
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <h1 class="mb-4">{{post.title}}</h1>

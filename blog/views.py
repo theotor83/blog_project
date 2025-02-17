@@ -50,14 +50,14 @@ def logout_view(request):
 @login_required()
 def new_post(request):
     if request.method == 'POST':
-        form = forms.CreatePost(request.POST, request.FILES)
+        form = forms.PostForm(request.POST, request.FILES)
         if form.is_valid:
             new_post = form.save(commit=False)
             new_post.user = request.user
             new_post.save()
             return redirect('index')
     else:
-        form = forms.CreatePost()
+        form = forms.PostForm()
     return render(request, 'new_post.html', {'form': form})
 
 @login_required
@@ -74,3 +74,17 @@ def new_comment(request, postid):
             return redirect('post-details', postid=post.id)
 
     return redirect('post-details', postid=post.id)
+
+@login_required
+def edit_post(request, postid):
+    post = get_object_or_404(BlogPost, pk=postid)
+
+    if request.method == "POST":
+        form = forms.PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('post-details', postid=post.id)
+    else:
+        form = forms.PostForm(instance=post)
+
+    return render(request, 'new_post.html', {'form': form, 'post': post})

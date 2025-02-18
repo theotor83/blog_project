@@ -14,10 +14,17 @@ def index(request):
     posts = BlogPost.objects.all().order_by('-id').values
     return render(request, "index.html", {"posts": posts})
 
-def postdetails(request, postid):
+def postdetails_old(request, postid):
+    post = get_object_or_404(BlogPost, pk=postid)
+    return redirect('post-details', postid=post.id, slug=post.slug)
+
+def postdetails(request, postid, slug):
     post = get_object_or_404(BlogPost, pk=postid)
     comments = Comment.objects.filter(post=post)
     form = forms.CommentForm()
+
+    if post.slug != slug:
+        return redirect('post-details', postid=post.id, slug=post.slug)
 
     return render(request, "detail.html", {
         "post": post,

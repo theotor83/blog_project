@@ -11,7 +11,7 @@
                 <h1 class="mb-4">{{post.title}}</h1>
                 <div class="meta mb-4 text-muted">
                     {% if post.dateCreated == post.dateUpdated%}
-                        Posted by {{post.user.username}} on {{post.dateCreated}}
+                        Posted by <a href="{% url 'profile-page' userid=user.id %}">{{post.user.username}}</a> on {{post.dateCreated}}
                     {% else %}
                         Posted by {{post.user.username}} on {{post.dateCreated}} (last updated on {{post.dateUpdated}})
                     {% endif %}
@@ -48,7 +48,7 @@
                             <div class="card mb-3">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="card-subtitle mb-2 text-muted">{{comment.user.username}}</h6>
+                                        <h6 class="card-subtitle mb-2 text-muted"><a href ="{% url 'profile-page' userid=comment.user.id %}">{{comment.user.username}}</a></h6>
                                         <small class="text-muted">{{comment.dateCreated}}</small>
                                     </div>
                                     <p class="card-text">{{comment.text}}</p>

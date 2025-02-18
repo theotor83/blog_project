@@ -31,6 +31,11 @@ class Comment(models.Model):
     def __str__(self):
         return f"By {self.user.username} : {self.text[:100]}"
     
+    @property
+    def getParentPostId(self):
+        print(self.post.id)
+        return self.post.id
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     post_count = models.IntegerField(default=-1)
@@ -66,16 +71,16 @@ class Profile(models.Model):
                 'date': post.dateCreated,
                 'title': post.title,
                 'preview': post.text[:100],
-                'postid': post.id,
+                'id': post.id,
             })
         
         for comment in comments:
             activities.append({
                 'type': 'comment',
                 'date': comment.dateCreated,
-                'title': f'Comment on: {comment.post.title}',
+                'title': comment.post.title,
                 'preview': comment.text[:100],
-                'commentid': comment.id,
+                'id': comment.post.id,
             })
-
+        
         return sorted(activities, key=lambda x: x['date'], reverse=True)[:limit]

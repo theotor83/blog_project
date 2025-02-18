@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 # Create your views here.
 
 def index(request):
-    posts = BlogPost.objects.all().order_by('-id').values
+    posts = BlogPost.objects.all().select_related('user').order_by('-id')
     return render(request, "index.html", {"posts": posts})
 
 def postdetails_old(request, postid):
@@ -93,9 +93,9 @@ def new_comment(request, postid):
             profile.comment_count += 1
             profile.save()
             
-            return redirect('post-details', postid=post.id)
+            return redirect('post-details', postid=post.id, slug=post.slug)
 
-    return redirect('post-details', postid=post.id)
+    return redirect('post-details', postid=post.id, slug=post.slug)
 
 @login_required
 def edit_post(request, postid):

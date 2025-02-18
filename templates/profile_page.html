@@ -62,9 +62,9 @@
                             <div class="list-group-item">
                                 <div class="d-flex w-100 justify-content-between">
                                     {% if activity.type == 'post' %}
-                                        <a href = "{{recent.url}}"><h6 class="mb-1">Posted: {{activity.title}}</h6></a>
+                                        <h6 class="mb-1">Posted: <a href = "{% url 'post-details-old' postid=activity.id %}">{{activity.title}}</h6></a>
                                     {% elif activity.type == 'comment' %}
-                                        <a href = "{{recent.url}}"><h6 class="mb-1">Commented on: {{activity.title}}</h6></a>
+                                        <h6 class="mb-1">Commented on: <a href = "{% url 'post-details-old' postid=activity.id %}">{{activity.title}}</h6> </a>
                                     {% endif %}
                                     <small class="text-muted">{{activity.date}}</small>
                                 </div>

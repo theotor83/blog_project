@@ -2,7 +2,80 @@
 {% load static %}
 {% block content %}
 
-<h1>{{user.username}} a {{user.profile.get_post_count}} posts et {{user.profile.get_comment_count}} commentaires</h1>
+<div class="container py-5">
+    <div class="row">
+        <!-- Profile Header -->
+        <div class="col-lg-8 mx-auto">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img src="http://127.0.0.1:8000/media/no_profile_picture.jpg" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
+                    <h3 class="card-title mb-3">{{user.username}}</h3>
+                    <p class="text-muted mb-1">Member since: January 1, 2025</p>
+                    <p class="text-muted mb-4">Bio: A passionate blogger sharing thoughts and ideas.</p>
+                    <button class="btn btn-primary">Edit Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Posts</h5>
+                    <h2 class="display-4 fw-bold text-primary">{{user.profile.get_post_count}}</h2>
+                    <p class="card-text">Total blog posts written</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Comments</h5>
+                    <h2 class="display-4 fw-bold text-primary">{{user.profile.get_comment_count}}</h2>
+                    <p class="card-text">Comments made across posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Views</h5>
+                    <h2 class="display-4 fw-bold text-primary">1.2k</h2>
+                    <p class="card-text">Total views on all posts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Recent Activity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for activity in recent %}
+                            <div class="list-group-item">
+                                <div class="d-flex w-100 justify-content-between">
+                                    {% if activity.type == 'post' %}
+                                        <a href = "{{recent.url}}"><h6 class="mb-1">Posted: {{activity.title}}</h6></a>
+                                    {% elif activity.type == 'comment' %}
+                                        <a href = "{{recent.url}}"><h6 class="mb-1">Commented on: {{activity.title}}</h6></a>
+                                    {% endif %}
+                                    <small class="text-muted">{{activity.date}}</small>
+                                </div>
+                                <p class="mb-1">{{activity.preview}}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
-

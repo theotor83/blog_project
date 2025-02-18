@@ -115,4 +115,6 @@ def profile_page(request, userid):
     profile.get_post_count
     profile.get_comment_count
 
-    return render(request, 'profile_page.html', {'user':user})
+    recent = profile.get_recent_activity()
+
+    return render(request, 'profile_page.html', {'user':user, 'recent':recent})

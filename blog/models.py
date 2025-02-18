@@ -29,10 +29,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     post_count = models.IntegerField(default=-1)
     comment_count = models.IntegerField(default=-1)
+    bio = models.TextField(null=True, blank=True)
+    profile_picture = models.ImageField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Profile {self.user.username}"
 
     @property
     def get_post_count(self):
-        print(self.post_count)
         if self.post_count == -1:
             self.post_count = self.user.blog_posts.count()
             self.save()
@@ -44,3 +48,28 @@ class Profile(models.Model):
             self.comment_count = self.user.comments.count()
             self.save()
         return self.comment_count
+    
+    def get_recent_activity(self, limit=5):
+        posts = BlogPost.objects.filter(user=self.user).order_by('-dateCreated')[:limit]
+        comments = Comment.objects.filter(user=self.user).order_by('-dateCreated')[:limit]
+        
+        activities = []
+        for post in posts:
+            activities.append({
+                'type': 'post',
+                'date': post.dateCreated,
+                'title': post.title,
+                'preview': post.text[:100],
+                'postid': post.id,
+            })
+        
+        for comment in comments:
+            activities.append({
+                'type': 'comment',
+                'date': comment.dateCreated,
+                'title': f'Comment on: {comment.post.title}',
+                'preview': comment.text[:100],
+                'commentid': comment.id,
+            })
+
+        return sorted(activities, key=lambda x: x['date'], reverse=True)[:limit]

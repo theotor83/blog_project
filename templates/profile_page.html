@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>{{user.username}} a {{user.profile.get_post_count}} posts et {{user.profile.get_comment_count}} commentaires</h1>
+
+{% endblock %}
+

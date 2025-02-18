@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import BlogPost, Comment
+from .models import BlogPost, Comment, Profile
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from . import forms
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -57,6 +58,12 @@ def new_post(request):
             new_post = form.save(commit=False)
             new_post.user = request.user
             new_post.save()
+
+            # Update post_count in Profile
+            profile = request.user.profile
+            profile.post_count += 1
+            profile.save()
+
             return redirect('index')
     else:
         form = forms.PostForm()
@@ -73,6 +80,12 @@ def new_comment(request, postid):
             comment.post = post
             comment.user = request.user  # Ensure the user is logged in
             comment.save()
+
+            # Update comment_count in Profile
+            profile = request.user.profile
+            profile.comment_count += 1
+            profile.save()
+            
             return redirect('post-details', postid=post.id)
 
     return redirect('post-details', postid=post.id)
@@ -95,3 +108,11 @@ def edit_post(request, postid):
         form = forms.PostForm(instance=post)
     
     return render(request, 'edit_post.html', {'form': form})
+
+def profile_page(request, userid):
+    user = get_object_or_404(User, pk=userid)
+    profile, created = Profile.objects.get_or_create(user=user)
+    profile.get_post_count
+    profile.get_comment_count
+
+    return render(request, 'profile_page.html', {'user':user})

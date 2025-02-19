@@ -36,11 +36,13 @@ class Comment(models.Model):
         print(self.post.id)
         return self.post.id
     
+
+    
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     post_count = models.IntegerField(default=-1)
     comment_count = models.IntegerField(default=-1)
-    bio = models.TextField(null=True, blank=True)
+    bio = models.TextField(null=True, blank=True, max_length=255)
     profile_picture = models.ImageField(null=True, blank=True)
 
     def __str__(self):

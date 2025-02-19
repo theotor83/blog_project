@@ -8,11 +8,19 @@
         <div class="col-lg-8 mx-auto">
             <div class="card mb-4">
                 <div class="card-body text-center">
-                    <img src="http://127.0.0.1:8000/media/no_profile_picture.jpg" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
-                    <h3 class="card-title mb-3">{{user.username}}</h3>
+                    {% if requested_user.profile.profile_picture %}
+                        <img src="{{ requested_user.profile.profile_picture.url }}" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
+                    {% else %}
+                        <img src="http://127.0.0.1:8000/media/no_profile_picture.jpg" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
+                    {% endif %}
+                    <h3 class="card-title mb-3">{{requested_user.username}}</h3>
                     <p class="text-muted mb-1">Member since: January 1, 2025</p>
-                    <p class="text-muted mb-4">Bio: A passionate blogger sharing thoughts and ideas.</p>
-                    <button class="btn btn-primary">Edit Profile</button>
+                    {% if requested_user.profile.bio != None %}
+                        <p class="text-muted mb-4">Bio: {{requested_user.profile.bio}}</p>
+                    {% endif %}
+                    {% if requested_user.id == request.user.id or user.is_superuser %}
+                        <a href="{% url 'edit-profile' userid=requested_user.id %}" button class="btn btn-primary" >Edit Profile</button></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -24,7 +32,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <h5 class="card-title">Posts</h5>
-                    <h2 class="display-4 fw-bold text-primary">{{user.profile.get_post_count}}</h2>
+                    <h2 class="display-4 fw-bold text-primary">{{requested_user.profile.get_post_count}}</h2>
                     <p class="card-text">Total blog posts written</p>
                 </div>
             </div>
@@ -33,7 +41,7 @@
             <div class="card h-100">
                 <div class="card-body text-center">
                     <h5 class="card-title">Comments</h5>
-                    <h2 class="display-4 fw-bold text-primary">{{user.profile.get_comment_count}}</h2>
+                    <h2 class="display-4 fw-bold text-primary">{{requested_user.profile.get_comment_count}}</h2>
                     <p class="card-text">Comments made across posts</p>
                 </div>
             </div>

@@ -124,4 +124,25 @@ def profile_page(request, userid):
 
     recent = profile.get_recent_activity()
 
-    return render(request, 'profile_page.html', {'user':user, 'recent':recent})
+    return render(request, 'profile_page.html', {'requested_user':user, 'recent':recent})
+
+
+@login_required
+def edit_profile(request, userid):
+    user = get_object_or_404(User, id=userid)
+    profile = get_object_or_404(Profile, id=userid)
+
+    if request.user != profile.user and request.user.is_superuser == False:
+        return HttpResponseForbidden()
+    
+    if request.method == 'POST':
+        form = forms.ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            #profile.dateUpdated = timezone.now()
+            profile.save()
+            return redirect('profile-page', userid=userid)
+    else:
+        form = forms.ProfileForm(instance=profile)
+    
+    return render(request, 'edit_profile.html', {'form': form, 'requested_user':user})

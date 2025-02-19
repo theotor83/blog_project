@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{post.title}}</h5>
                         <p class="card-text text-muted small">
-                            Posted by <a href="{% url 'profile-page' userid=user.id %}">{{post.user.username}}</a> on {{post.dateCreated}}
+                            Posted by <a href="{% url 'profile-page' userid=post.user.id %}">{{post.user.username}}</a> on {{post.dateCreated}}
                         </p>
                         <p class="card-text">
                             {{post.text|truncatechars:223}}

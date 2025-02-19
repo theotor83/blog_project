@@ -18,3 +18,8 @@ class CommentForm(forms.ModelForm):
                 'style': 'resize: none;'
             }),
         }
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.Profile
+        fields = ['bio','profile_picture']

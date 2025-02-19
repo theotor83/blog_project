@@ -19,7 +19,7 @@
                         <p class="card-text">
                             {{post.text|truncatechars:223}}
                         </p>
-                        <a href="post/{{post.id}}" class="btn btn-primary">Read More</a>
+                        <a href="{% url 'post-details' postid=post.id slug=post.slug %}" class="btn btn-primary">Read More</a>
                     </div>
                 </div>
             </div>

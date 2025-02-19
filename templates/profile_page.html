@@ -14,7 +14,7 @@
                         <img src="http://127.0.0.1:8000/media/no_profile_picture.jpg" class="rounded-circle mb-3" width="150" height="150" alt="Profile Picture">
                     {% endif %}
                     <h3 class="card-title mb-3">{{requested_user.username}}</h3>
-                    <p class="text-muted mb-1">Member since: January 1, 2025</p>
+                    <p class="text-muted mb-1">Member since: {{requested_user.date_joined|date:"F j Y" }}</p>
                     {% if requested_user.profile.bio != None %}
                         <p class="text-muted mb-4">Bio: {{requested_user.profile.bio}}</p>
                     {% endif %}
@@ -58,32 +58,34 @@
     </div>
 
     <!-- Recent Activity -->
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Recent Activity</h5>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-                        {% for activity in recent %}
-                            <div class="list-group-item">
-                                <div class="d-flex w-100 justify-content-between">
-                                    {% if activity.type == 'post' %}
-                                        <h6 class="mb-1">Posted: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6></a>
-                                    {% elif activity.type == 'comment' %}
-                                        <h6 class="mb-1">Commented on: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6> </a>
-                                    {% endif %}
-                                    <small class="text-muted">{{activity.date}}</small>
+     {% if recent %}
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recent Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="list-group list-group-flush">
+                            {% for activity in recent %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        {% if activity.type == 'post' %}
+                                            <h6 class="mb-1">Posted: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6></a>
+                                        {% elif activity.type == 'comment' %}
+                                            <h6 class="mb-1">Commented on: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6> </a>
+                                        {% endif %}
+                                        <small class="text-muted">{{activity.date}}</small>
+                                    </div>
+                                    <p class="mb-1">{{activity.preview}}</p>
                                 </div>
-                                <p class="mb-1">{{activity.preview}}</p>
-                            </div>
-                        {% endfor %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 </div>
 
 {% endblock %}

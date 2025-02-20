@@ -42,7 +42,6 @@ main {
     transform: translateY(-2px);
 }
 
-/* Add to your existing CSS */
 .like-dislike-buttons {
     display: flex;
     gap: 1rem;

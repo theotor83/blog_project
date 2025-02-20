@@ -37,6 +37,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            Profile.objects.create(user=user, post_count=0, comment_count=0, reputation=0)
             login(request, user)
             return redirect('index')
     else:

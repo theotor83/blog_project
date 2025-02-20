@@ -76,9 +76,13 @@
                 <h1 class="mb-4">{{post.title}}</h1>
                 <div class="meta mb-4 text-muted d-flex align-items-center">
                     {% if post.user.profile.profile_picture %}
-                        <img src="{{ post.user.profile.profile_picture.url }}" width="60" height="60" class="rounded-circle me-2" alt="Profile Picture">
+                        <a href ="{% url 'profile-page' userid=post.user.id %}">
+                            <img src="{{ post.user.profile.profile_picture.url }}" width="60" height="60" class="rounded-circle me-2" alt="Profile Picture">
+                        </a>
                     {% else %}
-                        <img src="/media/placeholder.jpg" width="60" height="60" class="rounded-circle me-2" alt="Default Profile Picture">
+                        <a href ="{% url 'profile-page' userid=post.user.id %}">
+                            <img src="/media/no_profile_picture.jpg" width="60" height="60" class="rounded-circle me-2" alt="Default Profile Picture">
+                        </a>
                     {% endif %}
                     <div>
                         {% if post.dateCreated == post.dateUpdated %}
@@ -97,11 +101,11 @@
                     <p>{{post.text}}</p>
                 </div>
                 <div class="like-dislike-buttons">
-                    <button class="like-btn" data-post-id="{{ post.id }}">
+                    <button class="like-btn {% if user in post.likes.all %}active{% endif %}" data-post-id="{{ post.id }}">
                         <i class="fas fa-thumbs-up"></i>
                         <span class="like-count">{{ post.likes.count }}</span>
                     </button>
-                    <button class="dislike-btn" data-post-id="{{ post.id }}">
+                    <button class="dislike-btn {% if user in post.dislikes.all %}active{% endif %}" data-post-id="{{ post.id }}">
                         <i class="fas fa-thumbs-down"></i>
                         <span class="dislike-count">{{ post.dislikes.count }}</span>
                     </button>
@@ -132,9 +136,13 @@
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <div class="d-flex align-items-center">
                                             {% if comment.user.profile.profile_picture %}
-                                                <img src="{{ comment.user.profile.profile_picture.url }}" width="30" height="30" class="rounded-circle me-2" alt="Profile Picture">
+                                                <a href ="{% url 'profile-page' userid=comment.user.id %}">
+                                                    <img src="{{ comment.user.profile.profile_picture.url }}" width="30" height="30" class="rounded-circle me-2" alt="Profile Picture">
+                                                </a>
                                             {% else %}
-                                                <img src="/media/no_profile_picture.jpg" width="30" height="30" class="rounded-circle me-2" alt="Default Profile Picture">
+                                                <a href ="{% url 'profile-page' userid=comment.user.id %}">
+                                                    <img src="/media/no_profile_picture.jpg" width="30" height="30" class="rounded-circle me-2" alt="Default Profile Picture">
+                                                </a>
                                             {% endif %}
                                             <h6 class="card-subtitle mb-2 text-muted"><a href ="{% url 'profile-page' userid=comment.user.id %}">{{comment.user.username}}</a></h6>
                                         </div>
@@ -143,11 +151,11 @@
                                     <p class="card-text">{{comment.text}}</p>
                                 </div>
                                 <div class="like-dislike-buttons">
-                                    <button class="like-btn" data-comment-id="{{ comment.id }}">
+                                    <button class="like-btn {% if user in comment.likes.all %}active{% endif %}" data-comment-id="{{ comment.id }}">
                                         <i class="fas fa-thumbs-up"></i>
                                         <span class="like-count">{{ comment.likes.count }}</span>
                                     </button>
-                                    <button class="dislike-btn" data-comment-id="{{ comment.id }}">
+                                    <button class="dislike-btn {% if user in comment.dislikes.all %}active{% endif %}" data-comment-id="{{ comment.id }}">
                                         <i class="fas fa-thumbs-down"></i>
                                         <span class="dislike-count">{{ comment.dislikes.count }}</span>
                                     </button>

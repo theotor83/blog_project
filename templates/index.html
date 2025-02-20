@@ -17,7 +17,7 @@
                             {% if post.user.profile.profile_picture %}
                                 <img src="{{ post.user.profile.profile_picture.url }}" width="30" height="30" class="rounded-circle me-2" alt="Profile Picture">
                             {% else %}
-                                <img src="/media/placeholder.jpg" width="30" height="30" class="rounded-circle me-2" alt="Default Profile Picture">
+                                <img src="/media/no_profile_picture.jpg" width="30" height="30" class="rounded-circle me-2" alt="Default Profile Picture">
                             {% endif %}
                                 Posted by <a href="{% url 'profile-page' userid=post.user.id %}">{{post.user.username}}</a> on {{post.dateCreated|date:"F j, Y H:i"}}
                         </p>

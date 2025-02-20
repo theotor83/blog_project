@@ -13,4 +13,8 @@ urlpatterns = [
     path('post/<int:postid>/edit/', views.edit_post, name='edit-post'),
     path('profile/<int:userid>/', views.profile_page, name='profile-page'),
     path('profile/<int:userid>/edit', views.edit_profile, name='edit-profile'),
+    path('like-post/<int:post_id>/', views.like_post, name='like-post'),
+    path('dislike-post/<int:post_id>/', views.dislike_post, name='dislike-post'),
+    path('like-comment/<int:comment_id>/', views.like_comment, name='like-comment'),
+    path('dislike-comment/<int:comment_id>/', views.dislike_comment, name='dislike-comment'),
 ]

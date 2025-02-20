@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from . import forms
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -146,3 +146,121 @@ def edit_profile(request, userid):
         form = forms.ProfileForm(instance=profile)
     
     return render(request, 'edit_profile.html', {'form': form, 'requested_user':user})
+
+
+
+def like_post(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    user = request.user
+    author = get_object_or_404(User, id=post.user.id)
+
+    if user in post.dislikes.all():
+        post.dislikes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+    else:
+        post.likes.add(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+
+    return JsonResponse({
+        'likes_count': post.likes.count(),
+        'dislikes_count': post.dislikes.count()
+    })
+
+
+def dislike_post(request, post_id):
+    post = get_object_or_404(BlogPost, id=post_id)
+    user = request.user
+    author = get_object_or_404(User, id=post.user.id)
+
+    if user in post.likes.all():
+        post.likes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+    
+    if user in post.dislikes.all():
+        post.dislikes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+    else:
+        post.dislikes.add(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+
+    
+
+    return JsonResponse({
+        'likes_count': post.likes.count(),
+        'dislikes_count': post.dislikes.count()
+    })
+
+
+
+def like_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    user = request.user
+    author = get_object_or_404(User, id=comment.user.id)
+
+    if user in comment.dislikes.all():
+        comment.dislikes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+        
+
+    if user in comment.likes.all():
+        comment.likes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+
+    else:
+        comment.likes.add(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+
+    return JsonResponse({
+        'likes_count': comment.likes.count(),
+        'dislikes_count': comment.dislikes.count()
+    })
+
+def dislike_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    user = request.user
+    author = get_object_or_404(User, id=comment.user.id)
+
+    if user in comment.likes.all():
+        comment.likes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+            
+    if user in comment.dislikes.all():
+        comment.dislikes.remove(user)
+        if author.profile.reputation != None:
+            author.profile.reputation += 1
+            author.profile.save()
+
+    else:
+        comment.dislikes.add(user)
+        if author.profile.reputation != None:
+            author.profile.reputation -= 1
+            author.profile.save()
+
+    return JsonResponse({
+        'likes_count': comment.likes.count(),
+        'dislikes_count': comment.dislikes.count()
+    })

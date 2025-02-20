@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 # Create your models here.
 class BlogPost(models.Model):
@@ -12,6 +13,8 @@ class BlogPost(models.Model):
     text = models.TextField(max_length=65535)
     dateCreated = models.DateTimeField(default=timezone.now)
     dateUpdated = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='post_dislikes', blank=True)
 
     def __str__(self):
         return self.title
@@ -27,6 +30,8 @@ class Comment(models.Model):
     text = models.TextField(max_length=4096)
     dateCreated = models.DateTimeField(default=timezone.now)
     dateUpdated = models.DateTimeField(default=timezone.now)
+    likes = models.ManyToManyField(User, related_name='comment_likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='comment_dislikes', blank=True)
 
     def __str__(self):
         return f"By {self.user.username} : {self.text[:100]}"
@@ -43,6 +48,7 @@ class Profile(models.Model):
     comment_count = models.IntegerField(default=-1)
     bio = models.TextField(null=True, blank=True, max_length=255)
     profile_picture = models.ImageField(null=True, blank=True)
+    reputation = models.IntegerField(null=True)
 
     def __str__(self):
         return f"Profile {self.user.username}"
@@ -87,3 +93,22 @@ class Profile(models.Model):
             })
         
         return sorted(activities, key=lambda x: x['date'], reverse=True)[:limit]
+    
+    @property
+    def get_reputation(self):
+        if self.reputation == None:
+            post_reputation = BlogPost.objects.filter(user=self.user).aggregate(
+                total_likes=Count("likes"),
+                total_dislikes=Count("dislikes")
+            )
+
+            comment_reputation = Comment.objects.filter(user=self.user).aggregate(
+                total_likes=Count("likes"),
+                total_dislikes=Count("dislikes")
+            )
+
+            total_reputation = ((post_reputation["total_likes"] or 0) - (post_reputation["total_dislikes"] or 0) + (comment_reputation["total_likes"] or 0) - (comment_reputation["total_dislikes"] or 0))
+
+            self.reputation = total_reputation
+            self.save()
+        return self.reputation

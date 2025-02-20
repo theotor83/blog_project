@@ -41,3 +41,47 @@ main {
 .floating-button:hover {
     transform: translateY(-2px);
 }
+
+/* Add to your existing CSS */
+.like-dislike-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.like-btn, .dislike-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    background: #f0f2f5;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.like-btn:hover {
+    background: #e3f2fd;
+    color: #0d6efd;
+}
+
+.dislike-btn:hover {
+    background: #fde3e3;
+    color: #dc3545;
+}
+
+.like-btn.active {
+    background: #e3f2fd;
+    color: #0d6efd;
+}
+
+.dislike-btn.active {
+    background: #fde3e3;
+    color: #dc3545;
+}
+
+.like-count, .dislike-count {
+    font-weight: 500;
+}

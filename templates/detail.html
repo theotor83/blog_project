@@ -2,6 +2,71 @@
 {% load static %}
 {% block content %}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to handle like/dislike clicks
+        function handleLikeDislike(url, button, likeCountElement, dislikeCountElement) {
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                likeCountElement.textContent = data.likes_count;
+                dislikeCountElement.textContent = data.dislikes_count;
+                button.classList.toggle('active');
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    
+        // Post like/dislike buttons
+        document.querySelectorAll('.like-btn[data-post-id]').forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.postId;
+                const url = `/like-post/${postId}/`;
+                const likeCountElement = this.querySelector('.like-count');
+                const dislikeCountElement = this.closest('.like-dislike-buttons').querySelector('.dislike-count');
+                handleLikeDislike(url, this, likeCountElement, dislikeCountElement);
+            });
+        });
+    
+        document.querySelectorAll('.dislike-btn[data-post-id]').forEach(button => {
+            button.addEventListener('click', function() {
+                const postId = this.dataset.postId;
+                const url = `/dislike-post/${postId}/`;
+                const dislikeCountElement = this.querySelector('.dislike-count');
+                const likeCountElement = this.closest('.like-dislike-buttons').querySelector('.like-count');
+                handleLikeDislike(url, this, likeCountElement, dislikeCountElement);
+            });
+        });
+    
+        // Comment like/dislike buttons
+        document.querySelectorAll('.like-btn[data-comment-id]').forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.dataset.commentId;
+                const url = `/like-comment/${commentId}/`;
+                const likeCountElement = this.querySelector('.like-count');
+                const dislikeCountElement = this.closest('.like-dislike-buttons').querySelector('.dislike-count');
+                handleLikeDislike(url, this, likeCountElement, dislikeCountElement);
+            });
+        });
+    
+        document.querySelectorAll('.dislike-btn[data-comment-id]').forEach(button => {
+            button.addEventListener('click', function() {
+                const commentId = this.dataset.commentId;
+                const url = `/dislike-comment/${commentId}/`;
+                const dislikeCountElement = this.querySelector('.dislike-count');
+                const likeCountElement = this.closest('.like-dislike-buttons').querySelector('.like-count');
+                handleLikeDislike(url, this, likeCountElement, dislikeCountElement);
+            });
+        });
+    });
+</script>
+
     <article>
         {% if user.is_superuser %}
             <a href="{% url 'edit-post' post.id %}" class="btn btn-primary floating-button">Edit</a>
@@ -30,6 +95,16 @@
                 {% endif %}
                 <div class="content">
                     <p>{{post.text}}</p>
+                </div>
+                <div class="like-dislike-buttons">
+                    <button class="like-btn" data-post-id="{{ post.id }}">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="like-count">{{ post.likes.count }}</span>
+                    </button>
+                    <button class="dislike-btn" data-post-id="{{ post.id }}">
+                        <i class="fas fa-thumbs-down"></i>
+                        <span class="dislike-count">{{ post.dislikes.count }}</span>
+                    </button>
                 </div>
                 {% if user.is_authenticated %}
                     <div class="comment-form mt-5">
@@ -66,6 +141,16 @@
                                         <small class="text-muted">{{comment.dateCreated|date:"F j, Y H:i"}}</small>
                                     </div>
                                     <p class="card-text">{{comment.text}}</p>
+                                </div>
+                                <div class="like-dislike-buttons">
+                                    <button class="like-btn" data-comment-id="{{ comment.id }}">
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <span class="like-count">{{ comment.likes.count }}</span>
+                                    </button>
+                                    <button class="dislike-btn" data-comment-id="{{ comment.id }}">
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <span class="dislike-count">{{ comment.dislikes.count }}</span>
+                                    </button>
                                 </div>
                             </div>
                         {% endfor %}

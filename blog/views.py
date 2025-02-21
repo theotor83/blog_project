@@ -265,3 +265,11 @@ def dislike_comment(request, comment_id):
         'likes_count': comment.likes.count(),
         'dislikes_count': comment.dislikes.count()
     })
+
+def delete_post(request, postid):
+    if request.user.is_superuser:
+        post = get_object_or_404(BlogPost, id=postid)
+        post.delete()
+    else:
+        return HttpResponseForbidden()
+    return redirect('index')

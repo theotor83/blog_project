@@ -273,3 +273,11 @@ def delete_post(request, postid):
     else:
         return HttpResponseForbidden()
     return redirect('index')
+
+def delete_comment(request, postid, commentid):
+    if request.user.is_superuser:
+        comment = get_object_or_404(Comment, id=commentid)
+        comment.delete()
+    else:
+        return HttpResponseForbidden()
+    return redirect('post-details-old', postid=postid)

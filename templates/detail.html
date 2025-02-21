@@ -173,9 +173,9 @@
                                                 <small class="text-muted">{{comment.dateCreated|date:"F j, Y H:i"}}</small>
                                             </div>
                                         </div>
-                                        <button class="btn btn-danger btn-sm">
+                                        <a href="{% url 'delete-comment' post.id comment.id %}" button class="btn btn-danger btn-sm">
                                             <i class="fas fa-trash"></i>
-                                        </button>
+                                        </button></a>
                                     </div>
                                     <p class="card-text">{{comment.text|markdownify}}</p>
                                     <div class="like-dislike-buttons">

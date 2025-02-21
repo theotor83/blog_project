@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% load markdownify %}
+
 
 {% if user.is_authenticated %}
 <script>
@@ -120,7 +122,7 @@
                     <img src="/media/placeholder.jpg" width="600" class="img-fluid mb-4" alt="{{post.title}}">
                 {% endif %}
                 <div class="content">
-                    <p>{{post.text}}</p>
+                    <p>{{post.text|markdownify}}</p>
                 </div>
                 <div class="like-dislike-buttons">
                     <button class="like-btn {% if user in post.likes.all %}active{% endif %}" data-post-id="{{ post.id }}">
@@ -175,7 +177,7 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
-                                    <p class="card-text">{{comment.text}}</p>
+                                    <p class="card-text">{{comment.text|markdownify}}</p>
                                     <div class="like-dislike-buttons">
                                         <button class="like-btn {% if user in comment.likes.all %}active{% endif %}" data-comment-id="{{ comment.id }}">
                                             <i class="fas fa-thumbs-up"></i>

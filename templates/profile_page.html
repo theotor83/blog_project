@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
+{% load markdownify %}
 
 <div class="container py-5">
     <div class="row">
@@ -16,7 +17,7 @@
                     <h3 class="card-title mb-3">{{requested_user.username}}</h3>
                     <p class="text-muted mb-1">Member since: {{requested_user.date_joined|date:"F j Y" }}</p>
                     {% if requested_user.profile.bio != None %}
-                        <p class="text-muted mb-4">Bio: {{requested_user.profile.bio}}</p>
+                        <p class="text-muted mb-4">Bio: {{requested_user.profile.bio|markdownify}}</p>
                     {% endif %}
                     {% if requested_user.id == request.user.id or user.is_superuser %}
                         <a href="{% url 'edit-profile' userid=requested_user.id %}" button class="btn btn-primary" >Edit Profile</button></a>

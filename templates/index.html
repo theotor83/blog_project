@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 {% load static %}
+{% load markdownify %}
 
     <div class="row">
         {% for post in posts %}
@@ -22,7 +23,7 @@
                                 Posted by <a href="{% url 'profile-page' userid=post.user.id %}">{{post.user.username}}</a> on {{post.dateCreated|date:"F j, Y H:i"}}
                         </p>
                         <p class="card-text">
-                            {{post.text|truncatechars:223}}
+                            {{post.text|markdownify|truncatechars:223}}
                         </p>
                         <a href="{% url 'post-details' postid=post.id slug=post.slug %}" class="btn btn-primary">Read More</a>
                     </div>

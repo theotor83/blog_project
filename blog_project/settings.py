@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from blog.markdown_extensions import QuoteExtension
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -137,3 +138,20 @@ STATICFILES_DIRS = [
 MEDIA_URL = 'media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MARKDOWNIFY = {
+    "default": {
+        "WHITELIST_TAGS": [
+            "div", "blockquote", "strong", "br", "p", "em", "ul", "li", "ol", "a",
+            "h1", "h2", "h3", "h4", "h5", "h6", "code", "pre", "img"
+        ],
+        "MARKDOWN_EXTENSIONS": [
+            "markdown.extensions.extra",
+            "markdown.extensions.sane_lists",
+            "markdown.extensions.nl2br",
+            "blog.markdown_extensions"
+        ],
+        "WHITELIST_ATTRS": ["class", "href", "src", "alt"],  # Allow class attribute!
+    }
+}
+

@@ -91,3 +91,9 @@ main {
 .like-count, .dislike-count {
     font-weight: 500;
 }
+
+.quote { 
+	font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 16px; color: #444444; line-height: 125%;
+	background-color: #FAFAFA; border: #D1D7DC; border-style: solid;
+	border-left-width: 1px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px
+}

@@ -58,7 +58,7 @@
     </div>
 
     <!-- Recent Activity -->
-     {% if recent %}
+    {% if recent %}
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="card">
@@ -69,15 +69,45 @@
                         <div class="list-group list-group-flush">
                             {% for activity in recent %}
                                 <div class="list-group-item">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        {% if activity.type == 'post' %}
-                                            <h6 class="mb-1">Posted: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6></a>
-                                        {% elif activity.type == 'comment' %}
-                                            <h6 class="mb-1">Commented on: <a href = "{% url 'post-details' postid=activity.id slug=activity.slug %}">{{activity.title}}</h6> </a>
+                                    <div class="d-flex align-items-start gap-3">
+                                        <!-- Activity Thumbnail -->
+                                        {% if activity.image %}
+                                            <img src="{{ activity.image.url }}" 
+                                                 class="img-thumbnail" 
+                                                 width="60" 
+                                                 height="60" 
+                                                 style="object-fit: cover; flex-shrink: 0;" 
+                                                 alt="Post thumbnail">
+                                        {% else %}
+                                            <img src="/media/placeholder.jpg" 
+                                                 class="img-thumbnail" 
+                                                 width="60" 
+                                                 height="60" 
+                                                 style="object-fit: cover; flex-shrink: 0;" 
+                                                 alt="Post thumbnail">
                                         {% endif %}
-                                        <small class="text-muted">{{activity.date}}</small>
+                                        
+                                        <!-- Activity Content -->
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                {% if activity.type == 'post' %}
+                                                    <h6 class="mb-1">Posted: 
+                                                        <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}">
+                                                            {{activity.title}}
+                                                        </a>
+                                                    </h6>
+                                                {% elif activity.type == 'comment' %}
+                                                    <h6 class="mb-1">Commented on: 
+                                                        <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}">
+                                                            {{activity.title}}
+                                                        </a>
+                                                    </h6>
+                                                {% endif %}
+                                                <small class="text-muted">{{activity.date}}</small>
+                                            </div>
+                                            <p class="mb-1">{{activity.preview}}</p>
+                                        </div>
                                     </div>
-                                    <p class="mb-1">{{activity.preview}}</p>
                                 </div>
                             {% endfor %}
                         </div>

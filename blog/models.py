@@ -80,6 +80,7 @@ class Profile(models.Model):
                 'preview': post.text[:100],
                 'id': post.id,
                 'slug': post.slug,
+                'image': post.image,
             })
         
         for comment in comments:
@@ -90,6 +91,7 @@ class Profile(models.Model):
                 'preview': comment.text[:100],
                 'id': comment.post.id,
                 'slug': comment.post.slug,
+                'image': comment.post.image,
             })
         
         return sorted(activities, key=lambda x: x['date'], reverse=True)[:limit]

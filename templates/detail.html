@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 
+{% if user.is_authenticated %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Function to handle like/dislike clicks
@@ -66,6 +67,19 @@
         });
     });
 </script>
+{% else %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show alert for all like/dislike buttons when user is not authenticated
+        document.querySelectorAll('.like-btn, .dislike-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                alert('You must be signed in to like or dislike.');
+            });
+        });
+    });
+</script>
+{% endif %}
 
     <article>
         {% if user.is_superuser %}

@@ -95,6 +95,7 @@ class Profile(models.Model):
                 'id': comment.post.id,
                 'slug': comment.post.slug,
                 'image': comment.post.image,
+                'comment_id': comment.id,
             })
         
         return sorted(activities, key=lambda x: x['date'], reverse=True)[:limit]

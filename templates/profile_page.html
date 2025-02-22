@@ -99,7 +99,7 @@
                                                     </h6>
                                                 {% elif activity.type == 'comment' %}
                                                     <h6 class="mb-1">Commented on: 
-                                                        <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}">
+                                                        <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}#comment{{activity.comment_id}}">
                                                             {{activity.title}}
                                                         </a>
                                                     </h6>

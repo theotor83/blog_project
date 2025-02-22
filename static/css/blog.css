@@ -97,3 +97,10 @@ main {
 	background-color: #FAFAFA; border: #D1D7DC; border-style: solid;
 	border-left-width: 1px; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px
 }
+
+/* Highlight the targeted comment */
+/* This is useful for {url}#comment4, for example */
+.card:target {
+    border-left: 4px solid #007bff;
+    background-color: #f8f9fa;
+}

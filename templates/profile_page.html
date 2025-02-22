@@ -17,7 +17,7 @@
                     <h3 class="card-title mb-3">{{requested_user.username}}</h3>
                     <p class="text-muted mb-1">Member since: {{requested_user.date_joined|date:"F j Y" }}</p>
                     {% if requested_user.profile.bio != None %}
-                        <p class="text-muted mb-4">Bio: {{requested_user.profile.bio|markdownify}}</p>
+                        <p class="text-muted mb-4">Bio: {{requested_user.profile.bio}}</p>
                     {% endif %}
                     {% if requested_user.id == request.user.id or user.is_superuser %}
                         <a href="{% url 'edit-profile' userid=requested_user.id %}" button class="btn btn-primary" >Edit Profile</button></a>
@@ -73,19 +73,23 @@
                                     <div class="d-flex align-items-start gap-3">
                                         <!-- Activity Thumbnail -->
                                         {% if activity.image %}
-                                            <img src="{{ activity.image.url }}" 
-                                                 class="img-thumbnail" 
-                                                 width="60" 
-                                                 height="60" 
-                                                 style="object-fit: cover; flex-shrink: 0;" 
-                                                 alt="Post thumbnail">
+                                            <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}">
+                                                <img src="{{ activity.image.url }}" 
+                                                    class="img-thumbnail" 
+                                                    width="60" 
+                                                    height="60" 
+                                                    style="object-fit: cover; flex-shrink: 0;" 
+                                                    alt="Post thumbnail">
+                                            </a>
                                         {% else %}
-                                            <img src="/media/placeholder.jpg" 
-                                                 class="img-thumbnail" 
-                                                 width="60" 
-                                                 height="60" 
-                                                 style="object-fit: cover; flex-shrink: 0;" 
-                                                 alt="Post thumbnail">
+                                            <a href="{% url 'post-details' postid=activity.id slug=activity.slug %}"></a>
+                                                <img src="/media/placeholder.jpg" 
+                                                    class="img-thumbnail" 
+                                                    width="60" 
+                                                    height="60" 
+                                                    style="object-fit: cover; flex-shrink: 0;" 
+                                                    alt="Post thumbnail">
+                                            </a>
                                         {% endif %}
                                         
                                         <!-- Activity Content -->

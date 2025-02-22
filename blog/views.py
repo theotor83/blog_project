@@ -301,17 +301,36 @@ def dislike_comment(request, comment_id):
     })
 
 def delete_post(request, postid):
-    if request.user.is_superuser:
-        post = get_object_or_404(BlogPost, id=postid)
-        post.delete()
+    post = get_object_or_404(BlogPost, id=postid)
+    if request.user.is_superuser or request.user == post.user:
+        if post.delete():
+            author = post.user.profile
+            author.post_count -= 1
+            author.save()
     else:
         return HttpResponseForbidden()
     return redirect('index')
 
 def delete_comment(request, postid, commentid):
-    if request.user.is_superuser:
-        comment = get_object_or_404(Comment, id=commentid)
-        comment.delete()
+    comment = get_object_or_404(Comment, id=commentid)
+    if request.user.is_superuser or request.user == comment.user:
+        if comment.delete():
+            author = comment.user.profile
+            author.comment_count -= 1
+            author.save()
     else:
         return HttpResponseForbidden()
     return redirect('post-details-old', postid=postid)
+
+def search(request):
+    posts_per_page = 6
+    current_page = int(request.GET.get('page', 1))
+    search_term = str(request.GET.get('q'))
+    limit = current_page * posts_per_page
+
+    posts = BlogPost.objects.filter(title__contains=search_term).select_related('user').order_by('-id')[limit - posts_per_page : limit]
+    max_page  = ((posts.count()) // posts_per_page) + 1
+
+    pagination = generate_pagination(current_page, max_page)
+
+    return render(request, "index.html", {"posts" : posts, "current_page" : current_page, "pagination" : pagination})

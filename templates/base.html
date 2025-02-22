@@ -17,6 +17,12 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                </ul>
+                <form class="d-flex" action="{% url 'search' %}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="q">
+                    <button class="btn btn-outline-light" type="submit">Search</button>
+                </form>
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                     <li class="nav-item">

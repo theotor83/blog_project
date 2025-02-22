@@ -8,11 +8,45 @@ from django.http import HttpResponseForbidden, JsonResponse
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+# Functions used by views
+
+def generate_pagination(current_page, max_page):
+    if max_page == 1:
+        return [1]
+    
+    first_part = [1, 2] if max_page >= 2 else []
+    last_part = [max_page - 1, max_page] if max_page >= 2 else []
+    
+    middle_part = []
+    for p in [current_page - 1, current_page, current_page + 1]:
+        if 1 <= p <= max_page:
+            middle_part.append(p)
+    
+    pages = sorted(set(first_part + middle_part + last_part))
+    
+    pagination = []
+    prev = None
+    for page in pages:
+        if prev is not None and page > prev + 1:
+            pagination.append("...")
+        pagination.append(page)
+        prev = page
+    
+    return pagination
+
 # Create your views here.
 
 def index(request):
-    posts = BlogPost.objects.all().select_related('user').order_by('-id')
-    return render(request, "index.html", {"posts": posts})
+    posts_per_page = 6
+    current_page = int(request.GET.get('page', 1))
+    limit = current_page * posts_per_page
+    max_page  = ((BlogPost.objects.count()) // posts_per_page) + 1
+
+    posts = BlogPost.objects.all().select_related('user').order_by('-id')[limit - posts_per_page : limit]
+
+    pagination = generate_pagination(current_page, max_page)
+
+    return render(request, "index.html", {"posts" : posts, "current_page" : current_page, "pagination" : pagination})
 
 def postdetails_old(request, postid):
     post = get_object_or_404(BlogPost, pk=postid)

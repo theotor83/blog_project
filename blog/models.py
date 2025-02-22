@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.db.models import Count
+import uuid
 
 # Create your models here.
 class BlogPost(models.Model):
@@ -22,6 +23,8 @@ class BlogPost(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug or self.slug == "":
             self.slug = slugify(self.title)
+            if not self.slug: #if the title is not slugifiable, like "?????"
+                self.slug = str(uuid.uuid4())[:8]
         super().save(*args, **kwargs)
 
 class Comment(models.Model):

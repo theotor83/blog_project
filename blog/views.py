@@ -37,7 +37,7 @@ def register_view(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            Profile.objects.create(user=user, post_count=0, comment_count=0, reputation=0)
+            Profile.objects.get_or_create(user=user, defaults={'post_count': 0, 'comment_count': 0, 'reputation': 0})
             login(request, user)
             return redirect('index')
     else:
@@ -62,7 +62,7 @@ def logout_view(request):
 def new_post(request):
     if request.method == 'POST':
         form = forms.PostForm(request.POST, request.FILES)
-        if form.is_valid:
+        if form.is_valid():
             new_post = form.save(commit=False)
             new_post.user = request.user
             new_post.save()

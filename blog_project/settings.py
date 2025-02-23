@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog',
     'markdownify.apps.MarkdownifyConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -155,3 +156,8 @@ MARKDOWNIFY = {
     }
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
+}
